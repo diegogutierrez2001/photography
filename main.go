@@ -198,12 +198,22 @@ func collectionHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func makeLoggingHandler(fn func(http.ResponseWriter, *http.Request)) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		_, err := db.Exec("INSERT INTO logs (user_agent, requester) VALUES (?, ?)", r.Header.Values("User-Agent")[0], r.RemoteAddr)
+		if err != nil {
+			log.Print(fmt.Errorf("logging error : %v\n", err))
+		}
+		fn(w, r)
+	}
+}
+
 func main() {
 
 	dbSetup()
 
-	http.HandleFunc("/", galleryHandler)
-	http.HandleFunc("/collection/", collectionHandler)
+	http.HandleFunc("/", makeLoggingHandler(galleryHandler))
+	http.HandleFunc("/collection/", makeLoggingHandler(collectionHandler))
 
 	// CSS files don't require special serving
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./public/css"))))

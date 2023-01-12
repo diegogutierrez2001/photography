@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS logs;
+CREATE TABLE logs (
+	id 						INT NOT NULL AUTO_INCREMENT,
+	user_agent		VARCHAR(8192),
+	requester			VARCHAR(64),
+  request_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);
