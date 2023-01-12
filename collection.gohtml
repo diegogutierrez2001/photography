@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<script src = "/js/gallery.js" type = "text/javascript"/></script>
+		<link rel="stylesheet" href="/css/gallery_styles.css" />
+	</head>
+	<body>
+		<header>
+			<nav>
+				<h1><a href="/">Gallery.</a></h1>
+				<h2>Collections</h2>
+				<ul>
+					{{ range .Collections }}
+						<li><a href="/collection/{{ .ID }}">{{ .Title }}</a></li>
+					{{ end }}
+				</ul>
+			</nav>
+		</header>
+
+		<main>
+			<a class="prev" onclick="plusSlides(-1)">&lt;</a>
+			<div class="slideshow">
+				{{ range .Viewing.Photographs }}
+				<div class="slide">
+					<img clas="photo" src="http://storage.googleapis.com/photography.diegogutierrez.org/{{ .Name }}">
+					<div class="plaque">
+						<h3>{{ if .Title.Valid }}{{ printf "%s" .Title.String }}{{ end }}</h3>
+						<p>{{ if .Description.Valid }}{{ printf "%s" .Description.String }}{{ end }}</p>
+					</div>
+				</div>
+				{{end}}
+			</div>
+			<a class="next" onclick="plusSlides(1)">&gt;</a>
+		</main>
+	</body>
+</html>

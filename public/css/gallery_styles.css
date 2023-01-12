@@ -1,0 +1,71 @@
+body {
+	display: flex;
+	height: 100vh;
+	flex-direction: row;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+  color: black;
+}
+
+h1 {
+	font-size: 3rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+}
+
+header {
+	background: #f8f8f8;
+	flex: 1;
+	padding-left: 1rem;
+}
+
+/* Position the image container (needed to position the left and right arrows) */
+main {
+	flex: 5;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* Hide the images by default */
+.slide {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.slideshow {
+	flex: 10;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.prev, .next {
+	flex: 1;
+	text-align: center;
+  cursor: pointer;
+}
+
+.photo {
+	flex: 9;
+}
+
+.plaque {
+	flex: 1;
+	font-size: 0.9375rem;
+	line-height: 1.25rem;
+	color: black;
+	max-width: 720px;
+	margin-top: 0.5rem;
+}
+
+img {
+	width: 720px;
+	object-fit: contain;
+}
