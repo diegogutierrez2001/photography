@@ -7,13 +7,12 @@
 	<body>
 		<header>
 			<nav>
-				<h1><a href="/">Gallery.</a></h1>
-				<h2>Collections</h2>
-				<ul>
+				<h1><a href="/">Diego Gutierrez</a></h1>
+				<nav>
 					{{ range .Collections }}
-						<li><a href="/collection/{{ .ID }}">{{ .Title }}</a></li>
+						<a href="/collection/{{ .ID }}">{{ .Title }}</a><br>
 					{{ end }}
-				</ul>
+				</nav>
 			</nav>
 		</header>
 

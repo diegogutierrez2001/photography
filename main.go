@@ -78,7 +78,7 @@ func listFiles(bucket string) ([]string, error) {
 func getCollections() ([]Collection, error) {
 	var collections []Collection
 
-	rows, err := db.Query("SELECT * FROM collections")
+	rows, err := db.Query("SELECT id, title, description FROM collections WHERE visible = 1")
 	if err != nil {
 		return nil, fmt.Errorf("collections: %v", err)
 	}
@@ -100,7 +100,7 @@ func getCollections() ([]Collection, error) {
 
 func getCollection(collectionID int) (Collection, error) {
 	var c Collection
-	row := db.QueryRow("SELECT title, description FROM collections WHERE id = ?", collectionID)
+	row := db.QueryRow("SELECT title, description FROM collections WHERE id = ? AND visible = 1", collectionID)
 	err := row.Scan(&c.Title, &c.Description);
 	if err != nil {
 		return Collection{}, fmt.Errorf("collection %d: %v", collectionID, err)
@@ -189,10 +189,16 @@ func collectionHandler(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 	}
 	id, _ := strconv.Atoi(m[1])
-	c, _ := getCollection(id)
-	cs, _ := getCollections()
+	c, err := getCollection(id)
+	if err != nil {
+		http.NotFound(w, r)
+	}
+	cs, err := getCollections()
+	if err != nil {
+		http.NotFound(w, r)
+	}
 	gp := CollectionPipeline{Collections: cs, Viewing: c}
-	err := templates.ExecuteTemplate(w, "collection.gohtml", gp)
+	err = templates.ExecuteTemplate(w, "collection.gohtml", gp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
